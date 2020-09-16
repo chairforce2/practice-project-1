@@ -150,8 +150,6 @@ resource "aws_eip_association" "eip_assoc" {
 
 #Step 9
 #Create Ubuntu server and install+enable apache2
-
-#defining an EC2 instance to deploy as per the AWS Provider documentation
 resource "aws_instance" "Ubuntu_Web_Server" {
     #ami image ID pulled from AWS Marketplace for US-East-1 on Sept 11 2020
     ami = "ami-06b263d6ceff0b3dd"
