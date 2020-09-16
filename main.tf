@@ -17,7 +17,7 @@ Steps involved:
 
 provider "aws" {
   region  = "us-east-1"
-  #statically typed credentials, gather ad-hoc from Okta login at time of use (auto-rotated)
+  #statically typed credentials
   access_key = "my_access_key"
   secret_key = "my_secret_key"
 }
@@ -124,6 +124,19 @@ resource "aws_security_group" "allow_ssh_http_https_inbound" {
   }
 }
 
+#Step 7
+#Create network interface with an IP, place in subnet from step 4
+
+
+
+#Step 8 
+#Asign elastic IP to network interface from step 7
+
+
+
+
+#Step 9
+#Create Ubuntu server and install+enable apache2
 
 #defining an EC2 instance to deploy as per the AWS Provider documentation
 resource "aws_instance" "Ubuntu_Web_Server" {
