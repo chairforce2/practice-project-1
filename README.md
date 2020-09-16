@@ -1,7 +1,9 @@
 # practice-project-1
  
-A practice project to deploy a web server and all necessary infrastructure on AWS using Terraform. This uses static credential so in order to leverage this all you need is to 
+A practice project to deploy a web server and all necessary infrastructure on AWS using Terraform. This uses static credential so in order to leverage this all you need is to:
+
 a. have terraform installed and know how to do terraform init and terraform deploy
+
 b. have an AWS account and know how to get your access key and copy it into the placeholder values that are in the AWS provider definition in main.tf
 
 Steps involved:
