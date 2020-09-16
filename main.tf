@@ -126,15 +126,27 @@ resource "aws_security_group" "allow_ssh_http_https_inbound" {
 
 #Step 7
 #Create network interface with an IP, place in subnet from step 4
+resource "aws_network_interface" "ubuntu-test-interface" {
+  subnet_id       = aws_subnet.example-subnet.id
+  private_ips     = ["10.0.1.50"]
+  security_groups = [aws_security_group.allow_ssh_http_https_inbound.id]
 
-
-
+  attachment {
+    instance     = aws_instance.Ubuntu_Web_Server.id
+    device_index = 1
+  }
+}
 
 #Step 8 
 #Asign elastic IP to network interface from step 7
+resource "aws_eip" "example-eip" {
+  vpc = true
+}
 
-
-
+resource "aws_eip_association" "eip_assoc" {
+  network_interface_id = aws_instance.ubuntu-test-interface.id
+  allocation_id = aws_eip.example-eip.id
+}
 
 #Step 9
 #Create Ubuntu server and install+enable apache2
@@ -145,5 +157,12 @@ resource "aws_instance" "Ubuntu_Web_Server" {
     ami = "ami-06b263d6ceff0b3dd"
     #defining size/type of the EC2, in this case attempting to stay in free tier
     instance_type = "t2.micro"
-    
+    user_data     = <<-EOF
+                  #!/bin/bash
+                  sudo su
+                  yum -y install httpd
+                  echo "<p> My Instance! </p>" >> /var/www/html/index.html
+                  sudo systemctl enable httpd
+                  sudo systemctl start httpd
+                  EOF
 }
