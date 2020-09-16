@@ -34,7 +34,13 @@ resource "aws_vpc" "example-vpc" {
 #Step 2:
 #Creating an Internet Gateway
 
+resource "aws_internet_gateway" "example-vpc-internet-gateway" {
+  vpc_id = "${aws_vpc.example-vpc.id}"
 
+  tags = {
+    Name = "example"
+  }
+}
 
 #Step 3:
 #Create Custom Route Table
