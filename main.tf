@@ -129,6 +129,7 @@ resource "aws_security_group" "allow_ssh_http_https_inbound" {
 
 
 
+
 #Step 8 
 #Asign elastic IP to network interface from step 7
 
