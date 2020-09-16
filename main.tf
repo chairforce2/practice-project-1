@@ -48,7 +48,7 @@ resource "aws_route_table" "example-vpc-route-table" {
   #referencing the vpc_id from the VPC definition in Step 1
   vpc_id = aws_vpc.example-vpc.id
 
-#referencing the Internet Gatewaay from the definition in Step 2
+#referencing the Internet Gateway from the definition in Step 2
   route {
     cidr_block = "0.0.0.0/0"
     gateway_id = "${aws_internet_gateway.example-vpc-internet-gateway.id}"
@@ -85,6 +85,45 @@ resource "aws_route_table_association" "example-route-table-to-example-subnet-as
 
 #Step 6:
 #Create Security Group to allow ports 22, 80, 443
+resource "aws_security_group" "allow_ssh_http_https_inbound" {
+  name        = "allow_ssh_http_https_from_inbound"
+  description = "Allow inbound traffic ports 22, 80, 443"
+  vpc_id = "${aws_vpc.example-vpc.id}"
+
+  ingress {
+    description = "SSH from internet"
+    from_port   = 22
+    to_port     = 22
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+  ingress {
+    description = "HTTP from internet"
+    from_port   = 80
+    to_port     = 80
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+  ingress {
+    description = "HTTPS from internet"
+    from_port   = 443
+    to_port     = 443
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  egress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  tags = {
+    Name = "allow_ssh_http_https"
+  }
+}
+
 
 #defining an EC2 instance to deploy as per the AWS Provider documentation
 resource "aws_instance" "Ubuntu_Web_Server" {
