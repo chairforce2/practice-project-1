@@ -33,8 +33,8 @@ resource "aws_vpc" "example-vpc" {
 
 #Step 2:
 #Creating an Internet Gateway
-
 resource "aws_internet_gateway" "example-vpc-internet-gateway" {
+    #referencing the vpc_id from the VPC definition in Step 1
   vpc_id = "${aws_vpc.example-vpc.id}"
 
   tags = {
@@ -44,8 +44,26 @@ resource "aws_internet_gateway" "example-vpc-internet-gateway" {
 
 #Step 3:
 #Create Custom Route Table
+resource "aws_route_table" "example-vpc-route-table" {
+  #referencing the vpc_id from the VPC definition in Step 1
+  vpc_id = aws_vpc.example-vpc.id
 
+#referencing the Internet Gatewaay from the definition in Step 2
+  route {
+    cidr_block = "0.0.0.0/0"
+    gateway_id = "${aws_internet_gateway.example-vpc-internet-gateway.id}"
+  }
 
+#referencing the Internet Gatewaay from the definition in Step 2
+  route {
+    ipv6_cidr_block        = "::/0"
+    gateway_id = "${aws_internet_gateway.example-vpc-internet-gateway.id}"
+  }
+
+  tags = {
+    Name = "example"
+  }
+}
 
 #Step 4:
 #defining subnet in the example-vpc from Step 1
