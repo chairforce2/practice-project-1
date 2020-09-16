@@ -76,6 +76,16 @@ resource "aws_subnet" "example-subnet"{
   }
 }
 
+#Step 5:
+#Associating Route table from step 3 with subnet from step 4
+resource "aws_route_table_association" "example-route-table-to-example-subnet-association" {
+  subnet_id      = "${aws_subnet.example-subnet.id}"
+  route_table_id = "${aws_route_table.example-vpc-route-table.id}"
+}
+
+#Step 6:
+#Create Security Group to allow ports 22, 80, 443
+
 #defining an EC2 instance to deploy as per the AWS Provider documentation
 resource "aws_instance" "Ubuntu_Web_Server" {
     #ami image ID pulled from AWS Marketplace for US-East-1 on Sept 11 2020
